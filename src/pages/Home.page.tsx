@@ -46,7 +46,7 @@ export default function HomePage() {
                         activeId={parseInt(selectedActiveId)}
                         candleSize={parseInt(selectedCandleSize)}
                         chartHeight={400}
-                        chartMinutesBack={parseInt(selectedCandleSize) * 120}
+                        chartMinutesBack={parseInt(selectedCandleSize) / 60 * 500}
                     />
                 )}
             </Flex>
