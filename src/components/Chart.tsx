@@ -17,6 +17,7 @@ export function Chart({activeId, candleSize, chartHeight = 400, chartMinutesBack
     const fetchingRef = useRef<boolean>(false);
 
     useEffect(() => {
+        let isMounted = true;
         if (!sdk || !containerRef.current) return;
 
         const chart = createChart(containerRef.current, {
@@ -30,15 +31,15 @@ export function Chart({activeId, candleSize, chartHeight = 400, chartMinutesBack
             const chartLayer = await sdk.realTimeChartDataLayer(activeId, candleSize);
             const from = Math.floor(Date.now() / 1000) - chartMinutesBack * 60;
             const candles = await chartLayer.fetchAllCandles(from);
+            if (!isMounted) return;
 
-            const format = (cs: Candle[]) =>
-                cs.map((c) => ({
-                    time: c.from as UTCTimestamp,
-                    open: c.open,
-                    high: c.max,
-                    low: c.min,
-                    close: c.close,
-                }));
+            const format = (cs: Candle[]) => cs.map((c) => ({
+                time: c.from as UTCTimestamp,
+                open: c.open,
+                high: c.max,
+                low: c.min,
+                close: c.close,
+            }));
 
             series.setData(format(candles));
 
@@ -47,6 +48,7 @@ export function Chart({activeId, candleSize, chartHeight = 400, chartMinutesBack
             }
 
             chartLayer.subscribeOnLastCandleChanged((candle) => {
+                if (!isMounted) return;
                 series.update({
                     time: candle.from as UTCTimestamp,
                     open: candle.open,
@@ -57,21 +59,23 @@ export function Chart({activeId, candleSize, chartHeight = 400, chartMinutesBack
             });
 
             chartLayer.subscribeOnConsistencyRecovered(() => {
+                if (!isMounted) return;
                 const all = chartLayer.getAllCandles();
                 series.setData(format(all));
             });
 
             chart.timeScale().subscribeVisibleTimeRangeChange((range) => {
-                if (!range || !earliestLoadedRef.current || fetchingRef.current) return;
+                if (!range || !earliestLoadedRef.current || fetchingRef.current || !isMounted) return;
 
                 if ((range.from as number) <= earliestLoadedRef.current) {
                     fetchingRef.current = true;
                     const fetchFrom = earliestLoadedRef.current - chartMinutesBack * 60;
 
                     chartLayer.fetchAllCandles(fetchFrom).then((moreData) => {
+                        if (!isMounted) return;
                         const formatted = format(moreData);
 
-                        series.setData(formatted); // можно заменить на merge если нужно
+                        series.setData(formatted);
                         if (formatted.length > 0) {
                             earliestLoadedRef.current = formatted[0].time;
                         }
@@ -82,9 +86,10 @@ export function Chart({activeId, candleSize, chartHeight = 400, chartMinutesBack
             });
         };
 
-        initChart().then();
+        initChart().then()
 
         return () => {
+            isMounted = false;
             chart.remove();
         };
     }, [sdk, containerRef, activeId, candleSize, chartHeight, chartMinutesBack]);
