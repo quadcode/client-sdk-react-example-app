@@ -10,7 +10,7 @@ After cloning the repository:
 yarn install
 ```
 
-### 2. Copy the environment variables or create a new `.env.development.local` file with your own settings
+### 2. Copy the environment variables or create a new `.env.development.local` file with your own settings and change proxy settings in `vite.config.ts` if needed.
 
 ```bash
 cp .env.development.local.dist .env.development.local
