@@ -10,7 +10,7 @@ After cloning the repository:
 yarn install
 ```
 
-### 2. Copy the environment variables
+### 2. Copy the environment variables or create a new `.env.development.local` file with your own settings
 
 ```bash
 cp .env.development.local.dist .env.development.local
