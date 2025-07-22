@@ -16,7 +16,9 @@ yarn install
 cp .env.development.local.dist .env.development.local
 ```
 
-### 3. Start the development server
+### 3. Create account on https://trade.yourbroker.trade/en/register or use your existing account
+
+### 4. Start the development server
 
 ```bash
 yarn dev
