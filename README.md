@@ -10,7 +10,13 @@ After cloning the repository:
 yarn install
 ```
 
-### 2. Start the development server
+### 2. Copy the environment variables
+
+```bash
+cp .env.development.local.dist .env.development.local
+```
+
+### 3. Start the development server
 
 ```bash
 yarn dev
