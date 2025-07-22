@@ -10,15 +10,16 @@ After cloning the repository:
 yarn install
 ```
 
-### 2. Copy the environment variables or create a new `.env.development.local` file with your own settings and change proxy settings in `vite.config.ts` if needed.
+### 2. Configure (env + proxy + account)
 
 ```bash
 cp .env.development.local.dist .env.development.local
 ```
+   - Open .env.development.local and set your own variables/server **or** keep the default yourbroker settings.
+   - If you change servers, update the proxy in `vite.config.ts` as needed.
+   - If you stick with the default broker, create an account (or use an existing one) at https://trade.yourbroker.trade/en/register.
 
-### 3. Create account on https://trade.yourbroker.trade/en/register or use your existing account
-
-### 4. Start the development server
+### 3. Start the development server
 
 ```bash
 yarn dev
