@@ -4,6 +4,7 @@ import LoginPage from "../pages/Login.page.tsx";
 import LogoutPage from "../pages/Logout.page.tsx";
 import {PrivateRoute} from "./PrivateRoute.tsx";
 import {AppLayout} from "../layout/AppLayout.tsx";
+import CallbackPage from "../pages/Callback.page.tsx";
 
 export const routes: RouteObject[] = [
     {
@@ -13,6 +14,10 @@ export const routes: RouteObject[] = [
     {
         path: '/logout',
         element: <LogoutPage/>,
+    },
+    {
+        path: '/oauth/callback',
+        element: <CallbackPage/>,
     },
     {
         path: '/',

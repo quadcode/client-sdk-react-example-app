@@ -38,10 +38,10 @@ export default defineConfig({
                 changeOrigin: true,
             },
             '/proxy/api': {
-                target: 'https://trade.yourbroker.trade',
+                target: 'https://api.trade.yourbroker.trade',
                 changeOrigin: true,
                 secure: false,
-                rewrite: (path) => path.replace(/^\/proxy/, ''),
+                rewrite: (path) => path.replace(/^\/proxy\/api/, ''),
             },
             '/proxy/ws': {
                 target: 'wss://ws.trade.yourbroker.trade',
